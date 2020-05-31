@@ -45,10 +45,8 @@ app.get('/api/persons', (req, res) => {
 
 app.get('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id);
-  console.log(id);
   const person = persons.find(person => person.id === id);
-  console.log(person);
-  debugger;
+
   if (person) {
     res.status(200).json(person);
   } else {
@@ -56,6 +54,22 @@ app.get('/api/persons/:id', (req, res) => {
       error: 'not found',
     });
   }
+});
+
+app.put('/api/persons/:id', (req, res) => {
+  const id = Number(req.params.id);
+  let updatedPerson = persons.find(person => person.id === id);
+  updatedPerson = {
+    name: req.body.name,
+    number: req.body.number,
+    id: id,
+  };
+
+  persons = persons.map(person =>
+    person.id === updatedPerson.id ? updatedPerson : person
+  );
+
+  res.status(200).json(updatedPerson);
 });
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -88,7 +102,7 @@ app.post('/api/persons', (req, res) => {
   const person = {
     name: req.body.name,
     number: req.body.number,
-    id,
+    id: id,
   };
 
   persons = persons.concat(person);
