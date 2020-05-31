@@ -80,7 +80,7 @@ app.post('/api/persons', (req, res) => {
   if (!body.name || !body.number)
     return res.status(400).json({ error: 'Must provide name and number' });
 
-  if (persons.filter(person => person.name === body.name))
+  if (persons.find(person => person.name === body.name))
     return res.status(400).json({ error: 'Name must be unique' });
 
   const person = {
